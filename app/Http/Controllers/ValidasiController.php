@@ -93,13 +93,13 @@ class ValidasiController extends Controller
      */
     public function edit($id)
     {
-        // $validasis = Validasi::all();
-        // $site = Site::find($id);
-        // $status =
-        //     ['Aktif', 'Suspend', 'Tidak Aktif'];
-        // $status_validasi =
-        //     ['Sudah Validasi', 'Proses Validasi', 'Belum Validasi'];
-        // return view('validasi.editvalidasi', compact('validasis', 'site', 'status', 'status_validasi'));
+        $validasis = Validasi::find($id);
+        $sites = Site::all();
+        $status =
+            ['Aktif', 'Suspend', 'Tidak Aktif'];
+        $status_validasi =
+            ['Sudah Validasi', 'Proses Validasi', 'Belum Validasi'];
+        return view('validasi.editvalidasi', compact('validasis', 'sites', 'status', 'status_validasi'));
     }
 
     /**
