@@ -1,0 +1,106 @@
+<x-app-layout :assets="$assets ?? []">
+    <div class="row">
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="bg-success text-white rounded p-4">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h4>Sudah Validasi</h4>
+                        <h2 class="counter">{{ $statistics['sudah'] }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="bg-warning text-white rounded p-4">
+                            <i class="fa-solid fa-hourglass-start"></i>
+                        </div>
+                        <h4>Proses Validasi</h4>
+                        <h2 class="counter">{{ $statistics['proses'] }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="bg-danger text-white rounded p-4">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                        <h4>Belum Validasi</h4>
+                        <h2 class="counter">{{ $statistics['belum'] }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title mb-4 mt-2">List Validasi</h4>
+                    </div>
+                    <div class="card-action">
+                        <a href="{{ route('inputvalidasi') }}" class="btn btn-primary mt-2">Mulai Validasi</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table text-center" data-toggle="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Domain</th>
+                                    <th>Status</th>
+                                    <th>Status Validasi</th>
+                                    <th>Opsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($validasis as $val)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td><a href="https://{{ $val->site_id}}" target="_blank">{{ $val->site?->domain }}</td>
+                                        <td>
+                                            @if ($val->status == 'Tidak Aktif')
+                                                <span class="badge rounded-pill bg-danger">{{ $val->status }}</span>
+                                            @elseif ($val->status == 'Suspend')
+                                                <span class="badge rounded-pill bg-warning">{{ $val->status }}</span>
+                                            @else
+                                                <span class="badge rounded-pill bg-success">{{ $val->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($val->status_validasi == 'Belum Validasi')
+                                                <span class="badge rounded-pill bg-danger">{{ $val->status_validasi }}</span>
+                                            @elseif ($val->status_validasi == 'Proses Validasi')
+                                                <span class="badge rounded-pill bg-warning">{{ $val->status_validasi }}</span>
+                                            @else
+                                                <span class="badge rounded-pill bg-success">{{ $val->status_validasi }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="list/{{ $val->id }}/edit" class="btn btn-sm btn-warning text-white" title="Edit">
+                                                <i class="fa-solid fa-gear"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
