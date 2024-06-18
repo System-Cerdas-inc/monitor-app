@@ -46,6 +46,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Dashboard Routes
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+    // Profile Routes
+    Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+
 
     // Users Module
     Route::resource('users', UserController::class);

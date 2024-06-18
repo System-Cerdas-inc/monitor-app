@@ -40,8 +40,15 @@ class HomeController extends Controller
     {
         return view('auth.login');
     }
+
     public function recoverpw(Request $request)
     {
         return view('auth.recoverpw');
+    }
+
+    // Profile Routes
+    public function profile(Request $request)
+    {
+        return view('users.profile');
     }
 }
