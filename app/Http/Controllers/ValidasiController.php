@@ -18,8 +18,15 @@ class ValidasiController extends Controller
     public function index()
     {
         $sites = Site::all();
-        $validasis = Validasi::all();
+        $validasis = Validasi::with('site')->get();
 
+        // tampilkan data site yg blm dan sudah divalidasi dengan cek relasi validasi
+        $validasis = $sites->map(function ($site) use ($validasis) {
+            $site->detail_validasi = $validasis->where('site_id', $site->id)->first();
+            return $site;
+        });
+
+        // return $validasis;
         $doneValidasis = $validasis->where('status_validasi', 'Sudah Validasi')->count();
         $processValidasis = $validasis->where('status_validasi', 'Proses Validasi')->count();
         $notValidasis = $validasis->where('status_validasi', 'Belum Validasi')->count();

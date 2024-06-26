@@ -68,25 +68,29 @@
                                     $no = 1;
                                 @endphp
                                 @foreach ($validasis as $val)
+                                    @php
+                                        $status_validasi = !empty($val->detail_validasi) ? 'Sudah Validasi' : 'Belum Validasi';
+                                        $status_aktif = $val->detail_validasi->status ?? 'Tidak Diketahui';
+                                    @endphp
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td><a href="https://{{ $val->site_id}}" target="_blank">{{ $val->site?->domain }}</td>
+                                        <td><a href="https://{{ $val->site_id}}" target="_blank">{{ $val->domain }}</td>
                                         <td>
-                                            @if ($val->status == 'Tidak Aktif')
-                                                <span class="badge rounded-pill bg-danger">{{ $val->status }}</span>
-                                            @elseif ($val->status == 'Suspend')
-                                                <span class="badge rounded-pill bg-warning">{{ $val->status }}</span>
+                                            @if ($status_aktif == 'Tidak Aktif')
+                                                <span class="badge rounded-pill bg-danger">{{ $status_aktif }}</span>
+                                            @elseif ($status_aktif == 'Suspend' || $status_aktif == 'Tidak Diketahui')
+                                                <span class="badge rounded-pill bg-warning">{{ $status_aktif }}</span>
                                             @else
-                                                <span class="badge rounded-pill bg-success">{{ $val->status }}</span>
+                                                <span class="badge rounded-pill bg-success">{{ $status_aktif }}</span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($val->status_validasi == 'Belum Validasi')
-                                                <span class="badge rounded-pill bg-danger">{{ $val->status_validasi }}</span>
-                                            @elseif ($val->status_validasi == 'Proses Validasi')
-                                                <span class="badge rounded-pill bg-warning">{{ $val->status_validasi }}</span>
+                                            @if ($status_validasi == 'Belum Validasi')
+                                                <span class="badge rounded-pill bg-danger">{{ $status_validasi }}</span>
+                                            @elseif ($status_validasi == 'Proses Validasi')
+                                                <span class="badge rounded-pill bg-warning">{{ $status_validasi }}</span>
                                             @else
-                                                <span class="badge rounded-pill bg-success">{{ $val->status_validasi }}</span>
+                                                <span class="badge rounded-pill bg-success">{{ $status_validasi }}</span>
                                             @endif
                                         </td>
                                         <td>
