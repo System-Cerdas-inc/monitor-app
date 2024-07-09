@@ -33,7 +33,9 @@ class ValidasiController extends Controller
         $processValidasis = Site::whereHas('validasi', function ($query) {
             $query->where('status_validasi', 'Proses Validasi');
         })->count();
-        $notValidasis = Site::whereDoesntHave('validasi')->count();
+        $notValidasis = Site::whereDoesntHave('validasi')->count() + Site::whereHas('validasi', function ($query) {
+            $query->where('status_validasi', 'Belum Validasi');
+        })->count();
         
         $statistics = [
             'sudah' => $doneValidasis,
