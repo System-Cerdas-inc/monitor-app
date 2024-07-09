@@ -8,20 +8,13 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="tambahvalidasi" method="POST">
+                    <form action="{{ route('tambahvalidasi', $site->id) }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md- mb-3">
                                 <label class="form-label">Domain :</label>
-                                <select class="form-select @error('site_id') is-invalid @enderror" name="site_id"
-                                    id="site_id">
-                                    <option value="">--- Pilih Domain ---</option>
-                                    @foreach ($sites as $site)
-                                        <option value="{{ $site->id }}"
-                                            {{ old('site_id') == $site->id ? 'selected' : '' }}>{{ $site->domain }}
-                                            {{ old('domain') }}</option>
-                                    @endforeach
-                                </select>
+                                <input class="form-control @error('site_id') is-invalid @enderror" name="site_id"
+                                    id="site_id" value="{{ $site->domain }}">
                             </div>
                             <div class="col-md-6 mt-2">
                                 <label class="form-label">Status :</label>
@@ -29,8 +22,15 @@
                                     name="status">
                                     <option value="">--- Pilih Status ---</option>
                                     @foreach ($status as $st)
-                                        <option value="{{ $st }}"
-                                            {{ old('status') == $st ? 'selected' : '' }}>{{ $st }}</option>
+                                        @if ($site->validasi->status == 'Aktif' || $site->validasi->status == 'Tidak Aktif')
+                                            <option value="{{ $st }}"
+                                                {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}
+                                                disabled>{{ $st }}</option>
+                                        @else
+                                            <option value="{{ $st }}"
+                                                {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}>
+                                                {{ $st }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -40,27 +40,48 @@
                                     name="status_validasi">
                                     <option value="">--- Pilih Status ---</option>
                                     @foreach ($status_validasi as $val)
-                                        <option value="{{ $val }}"
-                                            {{ old('status_validasi') == $val ? 'selected' : '' }}>{{ $val }}
-                                        </option>
+                                        @if ($site->validasi->status_validasi == 'Sudah Validasi' || $site->validasi->status_validasi == 'Proses Validasi')
+                                            <option value="{{ $val }}"
+                                                {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}
+                                                disabled>{{ $val }}</option>
+                                        @else
+                                            <option value="{{ $val }}"
+                                                {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}>
+                                                {{ $val }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-12 mt-4">
-                                <label class="form-label">Dokumen :</label>
-                                <select class="form-select" id="dokumen" name="dokumen">
-                                    <option value="">--- Pilih Dokumen ---</option>
-                                </select>
-                                <div class="mt-2">
-                                    <embed type="application/pdf" src="" width="700"
-                                        height="350"></embed>
-
+                                <label class="form-label">Dokumen KAK :</label>
+                                <div class="mt-2"
+                                    style="width: 100%; height: 0; padding-bottom: 56.25%; position: relative;">
+                                    <embed type="application/pdf" src="{{ url('storage') . '/kak/' . $site->kak }}"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></embed>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <label class="form-label">Dokumen Probis :</label>
+                                <div class="mt-2"
+                                    style="width: 100%; height: 0; padding-bottom: 56.25%; position: relative;">
+                                    <embed type="application/pdf"
+                                        src="{{ url('storage') . '/probis/' . $site->probis }}"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></embed>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <label class="form-label">Dokumen Manual Book :</label>
+                                <div class="mt-2"
+                                    style="width: 100%; height: 0; padding-bottom: 56.25%; position: relative;">
+                                    <embed type="application/pdf"
+                                        src="{{ url('storage') . '/manual_book/' . $site->probis }}"
+                                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></embed>
                                 </div>
                             </div>
                             <div class="col-md-12 mt-4">
                                 <div class="form-group">
                                     <label class="form-label">Catatan Validasi :</label>
-                                    <textarea class="form-control @error('catatan') is-invalid @enderror" style="height: 200px" required name="catatan">{{ old('catatan') }}</textarea>
+                                    <textarea class="form-control @error('catatan') is-invalid @enderror" style="height: 200px" required name="catatan">{{ old('catatan', $site?->validasi?->catatan) }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -73,45 +94,3 @@
         </div>
     </div>
 </x-app-layout>
-<script>
-    $(document).ready(function() {
-        $('select[name="site_id"]').on('change', function() {
-            var site_id = $(this).val();
-            if (site_id) {
-                $.ajax({
-                    url: '/sites/getSiteById/' + site_id,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $('select[name="dokumen"]').empty();
-                        $.each(data, function(key, value) {
-                            //ambil key kak, probis, dan manual_book saja
-                            if (key == 'kak' || key == 'probis' || key ==
-                                'manual_book') {
-                                $('select[name="dokumen"]').append(
-                                    '<option value="' + key + '/' + value +
-                                    '">Dokumen ' +
-                                    key + ': ' + value + '</option>');
-                            }
-                        });
-                    }
-                });
-            } else {
-                $('select[name="dokumen"]').empty();
-            }
-        });
-        //ketika dokumen dipilih, iframe akan menampilkan dokumen yang dipilih
-        $('select[name="dokumen"]').on('change', function() {
-            var dokumen = $(this).val();
-            var url = 'storage/' + dokumen;
-            url = "{{ url('storage/') }}" + '/' + dokumen;
-            console.log(url);
-            if (dokumen) {
-                //tamplikan dokumen yang dipilih di embed
-                $('embed').attr('src', url);
-            } else {
-                $('embed').attr('src', '');
-            }
-        });
-    });
-</script>

@@ -47,15 +47,15 @@ class ValidasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        $sites = Site::all();
+        $site = Site::with('validasi')->find($id);
         $validasis = Validasi::all();
         $status =
             ['Aktif', 'Suspend', 'Tidak Aktif'];
         $status_validasi =
             ['Sudah Validasi', 'Proses Validasi', 'Belum Validasi'];
-        return view('validasi.inputvalidasi', compact('sites', 'validasis', 'status', 'status_validasi'));
+        return view('validasi.inputvalidasi', compact('site', 'validasis', 'status', 'status_validasi'));
     }
 
     /**
@@ -64,19 +64,27 @@ class ValidasiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         // dd($request->all());
         $validateData = $request->validate(
             [
-                'site_id' => 'required|unique:sites,domain',
+                'site_id' => 'required|unique:validasis,site_id',
                 'status' => 'required',
                 'status_validasi' => 'required',
                 'catatan' => 'required',
             ],
         );
         if ($validateData) {
-            Validasi::create($request->all());
+            Validasi::updateOrCreate(
+                ['site_id' => $id],
+                [
+                    'site_id' => $id,
+                    'status' => $request->status,
+                    'status_validasi' => $request->status_validasi,
+                    'catatan' => $request->catatan,
+                ]
+            );
             return redirect()->route('listvalidasi')->with('success', 'Berhasil Melakukan Validasi');
         } else {
             return back()->withInput();

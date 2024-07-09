@@ -104,10 +104,10 @@ Route::group(['prefix' => 'monitoring'], function () {
 //Validasi
 Route::group(['prefix' => 'validasi'], function () {
     Route::get('list', [ValidasiController::class, 'index'])->name('listvalidasi');
-    Route::get('inputvalidasi', [ValidasiController::class, 'create'])->name('inputvalidasi');
-    Route::post('tambahvalidasi', [ValidasiController::class, 'store'])->name('tambahvalidasi');
-    Route::get('list/{id}/edit', [ValidasiController::class, 'edit'])->name('editvalidasi');
-    Route::put('list/{id}', [ValidasiController::class, 'update'])->name('updatevalidasi');
+    Route::get('inputvalidasi/{id}', [ValidasiController::class, 'create'])->name('inputvalidasi');
+    Route::post('tambahvalidasi/{id}', [ValidasiController::class, 'store'])->name('tambahvalidasi');
+    // Route::get('list/{id}/edit', [ValidasiController::class, 'edit'])->name('editvalidasi');
+    // Route::put('list/{id}', [ValidasiController::class, 'update'])->name('updatevalidasi');
 });
 
 //Laporan

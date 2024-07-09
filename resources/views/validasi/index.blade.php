@@ -48,7 +48,6 @@
                         <h4 class="card-title mb-4 mt-2">List Validasi</h4>
                     </div>
                     <div class="card-action">
-                        <a href="{{ route('inputvalidasi') }}" class="btn btn-primary mt-2">Mulai Validasi</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -94,7 +93,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="list/{{ $val->id }}/edit" class="btn btn-sm btn-warning text-white" title="Edit">
+                                            <a href="{{ route('inputvalidasi', $val->id) }}" class="btn btn-sm btn-warning text-white" title="Edit">
                                                 <i class="fa-solid fa-gear"></i>
                                             </a>
                                         </td>
