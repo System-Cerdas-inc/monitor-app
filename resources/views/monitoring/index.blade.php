@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ route('inputmonitoring') }}" class="mt-3 btn btn-primary d-block rounded">Mulai Monitoring</a>
+                    <a href="{{ route('inputmonitoring') }}" class="mt-3 btn btn-primary d-block rounded {{ in_array(auth()->user()->user_type, ['admin', 'pimpinan']) ? 'disabled' : null  }}">Mulai Monitoring</a>
                 </div>
             </div>
         </div>
@@ -38,11 +38,15 @@
                                     <td>{{ $item->kondisi }}</td>
                                     <td>{{ $item->keterangan }}</td>
                                     <td>
+                                        @if(!in_array(auth()->user()->user_type, ['admin', 'pimpinan']))
                                         <a class="btn btn-sm btn-warning text-white swal-edit-button"
                                         data-target="#commodity_location_edit_modal" data-placement="top"
                                         title="Edit">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
+                                        @else
+                                        <span class="badge rounded-pill bg-danger">Tidak Ada Akses</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
