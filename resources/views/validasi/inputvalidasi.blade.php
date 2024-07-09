@@ -83,6 +83,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <a href="{{ route('listvalidasi') }}" class="btn btn-danger">Kembali</a>
                                 <button class="btn btn-primary float-end" type="submit">Submit</button>
                             </div>
                         </div>
