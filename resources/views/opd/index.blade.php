@@ -7,7 +7,7 @@
                         <h4 class="card-title mb-4 mt-2">Data OPD Provinsi Banten</h4>
                     </div>
                     <div class="card-action">
-                        <a href="{{ route('inputopd') }}" class="btn btn-primary mt-2" {{ auth()->user()->user_type != 'Admin' ? 'disabled' : null  }}>Tambah Data</a>
+                        <a href="{{ route('inputopd') }}" class="btn btn-primary mt-2" {{ auth()->user()->user_type != 'admin' ? 'disabled' : null  }}>Tambah Data</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,7 +33,7 @@
                                             {{-- <a class="btn btn-sm btn-success text-white" title="Details">
                                                 <i class="fa-solid fa-circle-info"></i>
                                             </a> --}}
-                                            @if(auth()->user()->user_type == 'Admin')
+                                            @if(auth()->user()->user_type == 'admin')
                                             <a href="list/{{ $opd->id }}/edit"
                                                 class="btn btn-sm btn-warning text-white" title="Edit">
                                                 <i class="fa-solid fa-pen-to-square"></i>
