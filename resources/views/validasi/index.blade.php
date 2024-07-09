@@ -73,7 +73,7 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td><a href="https://{{ $val->site_id}}" target="_blank">{{ $val->domain }}</td>
+                                        <td><a href="http://{{ $val->domain}}" target="_blank">{{ $val->domain }}</td>
                                         <td>
                                             @if ($status_aktif == 'Tidak Aktif')
                                                 <span class="badge rounded-pill bg-danger">{{ $status_aktif }}</span>
