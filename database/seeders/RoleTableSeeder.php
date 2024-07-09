@@ -33,7 +33,19 @@ class RoleTableSeeder extends Seeder
                 'title' => 'User',
                 'status' => 1,
                 'permissions' => []
-            ]
+            ],
+            [
+                'name' => 'operator',
+                'title' => 'Operator',
+                'status' => 1,
+                'permissions' => []
+            ],
+            [
+                'name' => 'pimpinan',
+                'title' => 'Pimpinan',
+                'status' => 1,
+                'permissions' => []
+            ],
         ];
 
         foreach ($roles as $key => $value) {
