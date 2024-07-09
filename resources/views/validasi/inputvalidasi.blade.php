@@ -24,8 +24,7 @@
                                     @foreach ($status as $st)
                                         @if ($site->validasi->status == 'Aktif' || $site->validasi->status == 'Tidak Aktif')
                                             <option value="{{ $st }}"
-                                                {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}
-                                                disabled>{{ $st }}</option>
+                                                {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}>{{ $st }}</option>
                                         @else
                                             <option value="{{ $st }}"
                                                 {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}>
@@ -42,8 +41,7 @@
                                     @foreach ($status_validasi as $val)
                                         @if ($site->validasi->status_validasi == 'Sudah Validasi' || $site->validasi->status_validasi == 'Proses Validasi')
                                             <option value="{{ $val }}"
-                                                {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}
-                                                disabled>{{ $val }}</option>
+                                                {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}>{{ $val }}</option>
                                         @else
                                             <option value="{{ $val }}"
                                                 {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}>
