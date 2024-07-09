@@ -115,6 +115,7 @@
             <span class="item-name">Laporan</span>
         </a>
     </li>
+    @if(auth()->user()->user_type == 'admin')
     <li class="nav-item">
         <a class="nav-link {{ activeRoute(route('users.index')) }}" href="{{ route('users.index') }}">
             <div class="icon">
@@ -123,6 +124,7 @@
             <span class="item-name">Manage Users</span>
         </a>
     </li>
+    @endif
     <li>
         <hr class="hr-horizontal">
     </li>
