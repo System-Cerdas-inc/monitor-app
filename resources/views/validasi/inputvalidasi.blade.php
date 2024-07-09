@@ -22,12 +22,12 @@
                                     name="status">
                                     <option value="">--- Pilih Status ---</option>
                                     @foreach ($status as $st)
-                                        @if ($site->validasi->status == 'Aktif' || $site->validasi->status == 'Tidak Aktif')
+                                        @if ($site?->validasi?->status == 'Aktif' || $site?->validasi?->status == 'Tidak Aktif')
                                             <option value="{{ $st }}"
-                                                {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}>{{ $st }}</option>
+                                                {{ old('status', $site?->validasi?->status) == $st ? 'selected' : '' }}>{{ $st }}</option>
                                         @else
                                             <option value="{{ $st }}"
-                                                {{ old('status', $site->validasi->status) == $st ? 'selected' : '' }}>
+                                                {{ old('status', $site?->validasi?->status) == $st ? 'selected' : '' }}>
                                                 {{ $st }}</option>
                                         @endif
                                     @endforeach
@@ -39,12 +39,12 @@
                                     name="status_validasi">
                                     <option value="">--- Pilih Status ---</option>
                                     @foreach ($status_validasi as $val)
-                                        @if ($site->validasi->status_validasi == 'Sudah Validasi' || $site->validasi->status_validasi == 'Proses Validasi')
+                                        @if ($site?->validasi?->status_validasi == 'Sudah Validasi' || $site?->validasi?->status_validasi == 'Proses Validasi')
                                             <option value="{{ $val }}"
-                                                {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}>{{ $val }}</option>
+                                                {{ old('status_validasi', $site?->validasi?->status_validasi) == $val ? 'selected' : '' }}>{{ $val }}</option>
                                         @else
                                             <option value="{{ $val }}"
-                                                {{ old('status_validasi', $site->validasi->status_validasi) == $val ? 'selected' : '' }}>
+                                                {{ old('status_validasi', $site?->validasi?->status_validasi) == $val ? 'selected' : '' }}>
                                                 {{ $val }}</option>
                                         @endif
                                     @endforeach
