@@ -32,7 +32,7 @@ class ValidasiController extends Controller
         })->count();
         $processValidasis = $validasis->where('status_validasi', 'Proses Validasi')->count();
         $notValidasis = $sites->count() - $doneValidasis;
-
+        
         $statistics = [
             'sudah' => $doneValidasis,
             'proses' => $processValidasis,

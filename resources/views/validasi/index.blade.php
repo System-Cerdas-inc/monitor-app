@@ -68,7 +68,7 @@
                                 @endphp
                                 @foreach ($validasis as $val)
                                     @php
-                                        $status_validasi = !empty($val->detail_validasi) ? 'Sudah Validasi' : 'Belum Validasi';
+                                        $status_validasi = $val?->detail_validasi?->status_validasi ?? 'Belum Validasi';
                                         $status_aktif = $val->detail_validasi->status ?? 'Tidak Diketahui';
                                     @endphp
                                     <tr>
