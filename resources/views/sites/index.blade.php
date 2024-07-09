@@ -8,7 +8,7 @@
                         </h4>
                     </div>
                     <div class="card-action">
-                        <a href="{{ route('inputsite') }}" class="btn btn-primary mt-2">Tambah Data</a>
+                        <a href="{{ route('inputsite') }}" class="btn btn-primary mt-2 {{ auth()->user()->user_type != 'admin' ? 'disabled' : null  }}">Tambah Data</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -39,6 +39,7 @@
                                     <td>{{ $site->lokasi_server }}</td>
                                     <td>{{ $site->tahun }}</td>
                                     <td>
+                                        @if(auth()->user()->user_type == 'admin')
                                         <a href="list/{{ $site->id }}/edit" class="btn btn-sm btn-warning text-white swal-edit-button"
                                             data-target="#commodity_location_edit_modal" data-placement="top"
                                             title="Edit">
@@ -52,6 +53,9 @@
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
+                                        @else
+                                        <span class="badge rounded-pill bg-danger">Tidak Ada Akses</span>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
