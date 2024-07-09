@@ -93,9 +93,13 @@
                                             @endif
                                         </td>
                                         <td>
+                                            @if(auth()->user()->user_type == 'pimpinan')
                                             <a href="{{ route('inputvalidasi', $val->id) }}" class="btn btn-sm btn-warning text-white" title="Edit">
                                                 <i class="fa-solid fa-gear"></i>
                                             </a>
+                                            @else
+                                            <span class="badge rounded-pill bg-danger">Tidak Ada Akses</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
