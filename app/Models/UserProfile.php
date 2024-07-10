@@ -24,5 +24,6 @@ class UserProfile extends Model
         'twitter_url',
         'linkedin_url',
         'instagram_url',
+        'profile_picture',
     ];
 }

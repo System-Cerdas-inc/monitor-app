@@ -6,6 +6,7 @@ use App\Models\Site;
 use App\Models\User;
 use App\Models\Validasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -75,6 +76,41 @@ class HomeController extends Controller
         $user->syncRoles($request->user_type);
 
         return redirect()->route('profile')->withSuccess('User updated successfully');
+    }
 
+    /**
+     * Update photo profile
+     *
+     */
+    public function updatePhotoProfile(Request $request)
+    {
+        $user = User::with('userProfile')->findOrFail(auth()->user()->id);
+
+        // Validate the request
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Delete the old profile picture if exists
+        if ($user->userProfile && $user->userProfile->profile_picture) {
+            Storage::delete($user->userProfile->profile_picture);
+        }
+
+        // Store the new profile picture
+        $file = $request->file('profile_picture');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('storage/profile_picture'), $filename);
+        $path = 'profile_picture/' . $filename;
+
+        // Update or create the user profile
+        $user->userProfile()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['profile_picture' => $path]
+        );
+
+        return response()->json([
+            'success' => true,
+            'profile_picture' => Storage::url($path),
+        ]);
     }
 }
