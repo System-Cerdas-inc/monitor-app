@@ -6,7 +6,7 @@
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex flex-wrap align-items-center">
                             <div class="profile-img position-relative me-3 mb-3 mb-lg-0 profile-logo profile-logo1">
-                                <img src="{{ asset('images/avatars/01.png') }}" alt="User-Profile"
+                                <img id="profilePicture" src="{{ asset('images/avatars/01.png') }}" alt="User-Profile"
                                     class="theme-color-default-img img-fluid rounded-pill avatar-100">
                                 <img src="{{ asset('images/avatars/avtar_1.png') }}" alt="User-Profile"
                                     class="theme-color-purple-img img-fluid rounded-pill avatar-100">
@@ -18,6 +18,11 @@
                                     class="theme-color-yellow-img img-fluid rounded-pill avatar-100">
                                 <img src="{{ asset('images/avatars/avtar_3.png') }}" alt="User-Profile"
                                     class="theme-color-pink-img img-fluid rounded-pill avatar-100">
+                                <button class="btn btn-secondary btn-sm position-absolute top-0 end-0"
+                                    onclick="document.getElementById('profilePictureInput').click()" style="display:none">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <input type="file" id="profilePictureInput" accept="image/*" onchange="loadFile(event)" style="display:none">
                             </div>
                             <div class="d-flex flex-wrap align-items-center mb-3 mb-sm-0">
                                 <h4 class="me-2 h4">{{ auth()->user()->full_name }} {{ auth()->user()->last_name }}</h4>
@@ -40,33 +45,43 @@
                         @csrf
                         <div class="form-group">
                             <label class="form-label" for="username">Username </label>
-                            <input type="text" class="form-control" id="username" name="username" value="{{ old('username', auth()->user()->username) }}" placeholder="Enter Name" readonly>
+                            <input type="text" class="form-control" id="username" name="username"
+                                value="{{ old('username', auth()->user()->username) }}" placeholder="Enter Name"
+                                readonly>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="form-label" for="first_name">First Name</label>
-                                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ old('first_name', auth()->user()->first_name) }}" placeholder="Enter First Name" readonly>
+                                    <input type="text" class="form-control" id="first_name" name="first_name"
+                                        value="{{ old('first_name', auth()->user()->first_name) }}"
+                                        placeholder="Enter First Name" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="form-label" for="last_name">Last Name</label>
-                                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ old('last_name', auth()->user()->last_name) }}" placeholder="Enter Last Name" readonly>
+                                    <input type="text" class="form-control" id="last_name" name="last_name"
+                                        value="{{ old('last_name', auth()->user()->last_name) }}"
+                                        placeholder="Enter Last Name" readonly>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->user()->email) }}" readonly>
+                            <input type="email" class="form-control" id="email" name="email"
+                                value="{{ old('email', auth()->user()->email) }}" readonly>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="phone_number">Phone Number</label>
-                            <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ old('phone_number', auth()->user()->phone_number) }}" readonly>
+                            <input type="text" class="form-control" name="phone_number" id="phone_number"
+                                value="{{ old('phone_number', auth()->user()->phone_number) }}" readonly>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="password">Password Input</label>
-                            <input type="password" class="form-control" name="password" id="password" value="{{ old('password', auth()->user()->password) }}" placeholder="Enter Password" readonly>
+                            <input type="password" class="form-control" name="password" id="password"
+                                value="{{ old('password', auth()->user()->password) }}" placeholder="Enter Password"
+                                readonly>
                         </div>
                         <button type="button" class="btn btn-primary" id="updateButton">Update</button>
                         <button type="button" class="btn btn-danger float-end">cancel</button>
@@ -76,7 +91,16 @@
         </div>
     </div>
     <script>
-        document.getElementById('updateButton').addEventListener('click', function () {
+        function loadFile(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('profilePicture');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        document.getElementById('updateButton').addEventListener('click', function() {
             var inputs = document.querySelectorAll('#profileForm input');
             inputs.forEach(function(input) {
                 input.removeAttribute('readonly');
@@ -88,7 +112,7 @@
             saveButton.className = 'btn btn-success ms-2';
             saveButton.innerText = 'Simpan';
             updateButton.parentNode.insertBefore(saveButton, updateButton.nextSibling);
-            
+
             // Disable the update button after it is clicked to prevent adding multiple save buttons
             updateButton.disabled = true;
         });
