@@ -113,8 +113,14 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link py-0 d-flex align-items-center" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if(auth()->user()->userProfile?->profile_picture)
+                            <img src="{{ asset('storage/' . auth()->user()->userProfile?->profile_picture) }}"
+                                alt="User-Profile"
+                                class="img-fluid avatar avatar-50 avatar-rounded">
+                        @else
                         <img src="{{ asset('images/avatars/01.png') }}" alt="User-Profile"
                             class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
+                        @endif
                         <img src="{{ asset('images/avatars/avtar_1.png') }}" alt="User-Profile"
                             class="theme-color-purple-img img-fluid avatar avatar-50 avatar-rounded">
                         <img src="{{ asset('images/avatars/avtar_2.png') }}" alt="User-Profile"
