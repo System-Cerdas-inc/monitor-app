@@ -28,5 +28,69 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Profile</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="profileForm" action="{{ route('profile.update') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label" for="username">Username </label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{ old('username', auth()->user()->username) }}" placeholder="Enter Name" readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="first_name">First Name</label>
+                                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ old('first_name', auth()->user()->first_name) }}" placeholder="Enter First Name" readonly>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="last_name">Last Name</label>
+                                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ old('last_name', auth()->user()->last_name) }}" placeholder="Enter Last Name" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', auth()->user()->email) }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone_number">Phone Number</label>
+                            <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ old('phone_number', auth()->user()->phone_number) }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password Input</label>
+                            <input type="password" class="form-control" name="password" id="password" value="{{ old('password', auth()->user()->password) }}" placeholder="Enter Password" readonly>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="updateButton">Update</button>
+                        <button type="button" class="btn btn-danger float-end">cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        document.getElementById('updateButton').addEventListener('click', function () {
+            var inputs = document.querySelectorAll('#profileForm input');
+            inputs.forEach(function(input) {
+                input.removeAttribute('readonly');
+            });
+
+            var updateButton = document.getElementById('updateButton');
+            var saveButton = document.createElement('button');
+            saveButton.type = 'submit';
+            saveButton.className = 'btn btn-success ms-2';
+            saveButton.innerText = 'Simpan';
+            updateButton.parentNode.insertBefore(saveButton, updateButton.nextSibling);
+            
+            // Disable the update button after it is clicked to prevent adding multiple save buttons
+            updateButton.disabled = true;
+        });
+    </script>
 </x-app-layout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Models\User;
 use App\Models\Validasi;
 use Illuminate\Http\Request;
 
@@ -46,9 +47,34 @@ class HomeController extends Controller
         return view('auth.recoverpw');
     }
 
-    // Profile Routes
+    /*
+     * Profile Routs
+     */
     public function profile(Request $request)
     {
         return view('users.profile');
+    }
+
+    /**
+     * Update profile data
+     *
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = User::with('userProfile')->findOrFail(auth()->user()->id);
+
+        $user->update([
+            'username' => $request->username,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'no_telp' => $request->no_telp,
+            'email' => $request->email,
+            'password' => $request->password != '' ? bcrypt($request->password) : $user->password,
+        ]);
+
+        $user->syncRoles($request->user_type);
+
+        return redirect()->route('users.profile')->withSuccess('User updated successfully');
+
     }
 }

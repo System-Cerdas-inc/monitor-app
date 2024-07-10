@@ -53,6 +53,7 @@ class UserController extends Controller
             'username' => $request->username,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'jabatan' => $request->jabatan,
             'no_telp' => $request->no_telp,
             'email' => $request->email,
             'user_type' => $request->user_type,
@@ -112,32 +113,20 @@ class UserController extends Controller
         // dd($request->all());
         $user = User::with('userProfile')->findOrFail($id);
 
-        $role = Role::find($request->user_role);
-        if(env('IS_DEMO')) {
-            if($role->name === 'admin'&& $user->user_type === 'admin') {
-                return redirect()->back()->with('error', 'Permission denied');
-            }
-        }
-        $user->assignRole($role->name);
+        $user->update([
+            'username' => $request->username,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'jabatan' => $request->jabatan,
+            'no_telp' => $request->no_telp,
+            'email' => $request->email,
+            'user_type' => $request->user_type,
+            'status' => $request->status,
+        ]);
 
-        $request['password'] = $request->password != '' ? bcrypt($request->password) : $user->password;
+        $user->syncRoles($request->user_type);
 
-        // User user data...
-        $user->fill($request->all())->update();
-
-        // Save user image...
-        if (isset($request->profile_image) && $request->profile_image != null) {
-            $user->clearMediaCollection('profile_image');
-            $user->addMediaFromRequest('profile_image')->toMediaCollection('profile_image');
-        }
-
-        // user profile data....
-        $user->userProfile->fill($request->userProfile)->update();
-
-        if(auth()->check()){
-            return redirect()->route('users.index')->withSuccess(__('message.msg_updated',['name' => __('message.user')]));
-        }
-        return redirect()->back()->withSuccess(__('message.msg_updated',['name' => 'My Profile']));
+        return redirect()->route('users.index')->withSuccess('User updated successfully');
 
     }
 
