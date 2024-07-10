@@ -74,7 +74,7 @@ class HomeController extends Controller
 
         $user->syncRoles($request->user_type);
 
-        return redirect()->route('users.profile')->withSuccess('User updated successfully');
+        return redirect()->route('profile')->withSuccess('User updated successfully');
 
     }
 }
