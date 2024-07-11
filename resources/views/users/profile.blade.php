@@ -6,8 +6,11 @@
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex flex-wrap align-items-center">
                             <div class="profile-img position-relative me-3 mb-3 mb-lg-0 profile-logo profile-logo1">
-                                <img id="profilePicture" src="{{ asset('images/avatars/01.png') }}" alt="User-Profile"
-                                    class="theme-color-default-img img-fluid rounded-pill avatar-100">
+                                @if(auth()->user()->userProfile?->profile_picture)
+                                    <img id="profilePicture" src="{{ asset('storage/' . auth()->user()->userProfile?->profile_picture) }}" alt="User-Profile" class="img-fluid rounded-pill avatar-100">
+                                @else
+                                <img id="profilePicture" src="{{ asset('images/avatars/01.png') }}" alt="User-Profile" class="theme-color-default-img img-fluid rounded-pill avatar-100">
+                                @endif
                                 <img src="{{ asset('images/avatars/avtar_1.png') }}" alt="User-Profile"
                                     class="theme-color-purple-img img-fluid rounded-pill avatar-100">
                                 <img src="{{ asset('images/avatars/avtar_2.png') }}" alt="User-Profile"
@@ -19,13 +22,13 @@
                                 <img src="{{ asset('images/avatars/avtar_3.png') }}" alt="User-Profile"
                                     class="theme-color-pink-img img-fluid rounded-pill avatar-100">
                                 <button class="btn btn-secondary btn-sm position-absolute top-0 end-0"
-                                    onclick="document.getElementById('profilePictureInput').click()" style="display:none">
+                                    onclick="document.getElementById('profilePictureInput').click()">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <input type="file" id="profilePictureInput" accept="image/*" onchange="loadFile(event)" style="display:none">
+                                <input type="file" id="profilePictureInput" accept="image/*" onchange="updateProfilePicture(event)" style="display:none">
                             </div>
                             <div class="d-flex flex-wrap align-items-center mb-3 mb-sm-0">
-                                <h4 class="me-2 h4">{{ auth()->user()->full_name }} {{ auth()->user()->last_name }}</h4>
+                                <h4 class="me-2 h4">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</h4>
                                 <span> - {{ auth()->user()->user_type }}</span>
                             </div>
                         </div>
@@ -91,13 +94,28 @@
         </div>
     </div>
     <script>
-        function loadFile(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('profilePicture');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
+        function updateProfilePicture(event) {
+            var formData = new FormData();
+            formData.append('profile_picture', event.target.files[0]);
+
+            fetch('{{ route("profile.photo.update") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    //reload the page to display the updated profile picture
+                    location.reload();
+                    alert('Profile picture updated successfully');
+                } else {
+                    alert('An error occurred while updating the profile picture');
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
         document.getElementById('updateButton').addEventListener('click', function() {

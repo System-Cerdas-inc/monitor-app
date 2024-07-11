@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Profile Routes
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
     Route::post('/profile', [HomeController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profile/photo', [HomeController::class, 'updatePhotoProfile'])->name('profile.photo.update');
 
 
     // Users Module
