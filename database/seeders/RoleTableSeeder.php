@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class RoleTableSeeder extends Seeder
@@ -21,12 +22,6 @@ class RoleTableSeeder extends Seeder
                 'title' => 'Admin',
                 'status' => 1,
                 'permissions' => ['role','role-add', 'role-list', 'permission', 'permission-add', 'permission-list']
-            ],
-            [
-                'name' => 'demo_admin',
-                'title' => 'Demo Admin',
-                'status' => 1,
-                'permissions' => []
             ],
             [
                 'name' => 'user',
@@ -48,11 +43,15 @@ class RoleTableSeeder extends Seeder
             ],
         ];
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Role::truncate();
+
         foreach ($roles as $key => $value) {
             $permission = $value['permissions'];
             unset($value['permissions']);
-            $role = Role::create($value);
+            $role = Role::updateOrCreate($value);
             $role->givePermissionTo($permission);
         }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
